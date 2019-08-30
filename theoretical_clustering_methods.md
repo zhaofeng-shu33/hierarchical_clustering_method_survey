@@ -8,7 +8,7 @@ MI(C,x) = \sum_{p=1}^n\sum_{X} (P(C_p,x) - P(C_p)P(x))^2
 $$
 Estimating $P(C_p)​$ from sample distribution directly. 
 
-Use Mixture Gaussian model to describe $P(x), P((C_p,x))​$. 
+Use Mixture Gaussian model to describe $P(x), P((C_p,x))$. 
 $$
 \begin{align*}
 P(x) &= \frac{1}{N} \sum_{i=1}^N G(x-x_i, \sigma^2) \\
@@ -27,7 +27,7 @@ Abbreviated as BHC.
 
 Use Bayesian posterior probability to determine which two clusters to merge in the framework of agglomerative clustering.
 
-Suppose there are $D_1, \dots, D_r ​$ clusters, each cluster consists of several points $D_k = \{x_{k_1},\dots x_{k_r}\}​$
+Suppose there are $D_1, \dots, D_r$ clusters, each cluster consists of several points $D_k = \{x_{k_1},\dots x_{k_r}\}$
 
 For any two clusters $D_i, D_j$, we can compute the posterior probability to merge them. Let $H^{k}_1$ be the prior probability that $D_i, D_j$
 
@@ -37,3 +37,34 @@ $$
 r_k = \Pr(H_1^k | D_k) = \frac{\alpha_k \Pr(D_k | H_1^k)}{\alpha_k \Pr(D_k | H_1^k) + (1-\alpha_k)\Pr(D_k | H_2^k)}
 $$
 
+There are three components to compute in this posterior: $\alpha_k, \Pr(D_k | H_1^k)$ and $\Pr(D_k | H_2^k)$
+
+$\Pr(D_k | H_2^k)$ is easy to be decomposed as $\Pr(D_i | T_i) \Pr(D_j | T_j)$
+
+Under the hypotheses $H_1^k$, points $D_k$ are coming from the same distribution, $p(x|\theta)$. We choose $\theta = (\mu, \Sigma)$ where both $\mu$ and $\Sigma$ are unknown. Using Bayesian inference, we choose Normal-inverse-Wishart distribution as prior for $\theta$.  The prior has four parameters $\mu_0, \lambda, \Psi, \nu​$.
+
+The posterior of $\theta$ has close form solution. 
+$$
+\begin{align}
+\mu_n & = \frac{\lambda \mu_0 + n \bar{x}}{\lambda + n} \\
+\lambda_n & = \lambda + n \\
+\nu_n & = \nu + n \\
+\Psi_n &= \Psi + \sum_{i=1}^n (x_i - \bar{x})(x_i - \bar{x})^T + \frac{\lambda n}{\lambda + n}(\bar{x} - \mu_0)(\bar{x} - \mu_0)^T
+\end{align}
+$$
+Also, the distribution for data can be obtained. That is
+$$
+p(D_k | H_1^k) = \frac{\Gamma_p(\nu_n/2)}{\Gamma_p(\nu/2)}\frac{|\Psi|^{\nu/2}}{|\Psi_n|^{\nu_n/2}}\left(\frac{\lambda}{\lambda_n}\right)^{\frac{p}{2}}(2\pi)^{-n/2}
+$$
+Notice $p$ is the dimension of $x$.
+
+For the third quantity $\alpha_k$, its formula comes from Dirichlet process:
+$$
+\begin{align}
+\pi_k & = \frac{\alpha g(n_k)}{ d_k } \\
+d_k &= \alpha g(n_k) + d(T_i) d(T_j)
+\end{align}
+$$
+Notice that $\alpha$ is the concentration parameter. The larger $\alpha$ is, the larger the prior $\Pr(H_1^k)$ is. $g(n)$ is a function such that a probability that a new point joining an existing cluster is proportional to the number of data points already in that cluster.
+
+Therefore, $g(n) = (n-1)g(n-1) \Rightarrow g(n) = (n-1)!$.
