@@ -4,30 +4,50 @@ Abbreviated as HAC. It is a general framework to do hierarchical clustering base
 
 It selects two clusters based on $\max_{i,j} \textrm{sim}(D_i, D_j)$ or $\min_{i,j} \textrm{d}(D_i, D_j)$. Since $d(D_i, D_j)\geq 0$ we can let $\textrm{sim}(D_i, D_j) = \frac{1}{d(D_i, D_j)}$ and the optimal solution does not change.
 
-After the choice of $i,j$, we construct $D'_{c} = D_i \cup D_j$ to replace $D_i$ and $D_j​$.
+After the choice of $i,j​$, we construct $D'_{c} = D_i \cup D_j​$ to replace $D_i​$ and $D_j​$.
 
+## Maximizing the mutual information between different clusters
 
+For two random variables, their similarity is measured by the inner product of their probability density function as:
+$$
+\textrm{CEF}(p,q) = \int p(x) q(x)dx
+$$
+CEF is called the clustering evaluation function, using Parzen Window estimator $P(x) = \frac{1}{N_r} \sum_{i=1}^{N_r} G(x-x_i, \sigma^2)$. The CEF reduces to
+$$
+\textrm{CEF}(p, q) = \frac{1}{2N_1 N_2} \sum_{i=1}^N\sum_{j=1}^NM(x_i,x_j) G(x_i - x_j, 2\sigma^2)
+$$
+The indicator function $M(x_i,x_j)$ is one when $x_i, x_j$ belongs to different clusters, otherwise it is zero.
+
+One way to extend CEF to multiple cluster case is:
+$$
+\textrm{CEF}(p, q) = \frac{1}{2N_1 N_2 \dots N_C} \sum_{i=1}^N\sum_{j=1}^NM(x_i,x_j) G(x_i - x_j, 2\sigma^2)
+$$
+The criterion of CEF for multiple clusters is used as a guidance to iterate the labels. [2002 TPAMI]
+
+The method should fix the number of cluster $C$. First we have a random label assignment, then we make a k nearest neighbor of each $x_i$ with size $k$ and within the label set of $x_i$. That is, we require the neighbors have the same label. We have at most $n$ sets, each set contains $k+1$ elements. If any two sets are identical, we keep only one. Next we exchange the label assignment of two set (they should have different label assignment) if this exchange can increase CEF. After this iteration, we decrease $k$ and repeat this process until $k$ reduces to 1. This scheme does not guarantee to find the global maximum of CEF but does give good approximation. We call this method ITC for short. 
 
 ## Maximizing the mutual information between samples and cluster labels
 
 Abbreviated as MIC. Do not use KL-divergence because of computational difficulty.
 
-Suppose there are $N$ samples and $n$ clusters.
+Suppose there are $N​$ samples and $n​$ clusters.
 $$
 MI(C,x) = \sum_{p=1}^n\sum_{X} (P(C_p,x) - P(C_p)P(x))^2
 $$
 Estimating $P(C_p)​$ from sample distribution directly. 
 
-Use Mixture Gaussian model to describe $P(x), P((C_p,x))$. 
+Use Mixture Gaussian model to describe $P(x), P(C_p,x)$. 
 $$
 \begin{align*}
 P(x) &= \frac{1}{N} \sum_{i=1}^N G(x-x_i, \sigma^2) \\
-P(C_p, x) &= \frac{1}{N} \sum_{k=1}^{N_p} G(x-x_{p,k}, \sigma^2)
+P(C_p, x) &= \frac{1}{N_p} \sum_{k=1}^{N_p} G(x-x_{p,k}, \sigma^2)
 \end{align*}
 $$
-Use agglomerative hierarchical clustering to increase $MI(C,x)$ in each step. [ICIP 2007]
+Simplifying $MI(C,x)$ we can find it is irrelevant with variable $x$, it is a function of the flat clustering $C$. 
 
-That is, to compute $\Delta MI(C,x)$ when two clusters $C_a, C_b$ are merged to $C_p$.
+Use agglomerative hierarchical clustering to increase $MI(C,x)$ in each step (greedy algorithm). [ICIP 2007]
+
+That is, to compute $\Delta MI(C,x)​$ when two clusters $C_a, C_b​$ are merged to $C_p​$.
 
 Ours: Minimizing the multivariate mutual information between different clusters.
 
@@ -49,11 +69,11 @@ $$
 
 There are three components to compute in this posterior: $\pi_k, \Pr(D_k | H_1^k)​$ and $\Pr(D_k | H_2^k)​$
 
-$\Pr(D_k | H_2^k)$ is easy to be decomposed as $\Pr(D_k | H_2^k)=Pr(D_i | T_i) \Pr(D_j | T_j)$
+$\Pr(D_k | H_2^k)​$ is easy to be decomposed as $\Pr(D_k | H_2^k)=Pr(D_i | T_i) \Pr(D_j | T_j)​$
 
 Under the hypotheses $H_1^k​$, points $D_k​$ are coming from the same distribution, $p(x|\theta)​$. We choose $\theta = (\mu, \Sigma)​$ where both $\mu​$ and $\Sigma​$ are unknown. Using Bayesian inference, we choose Normal-inverse-Wishart distribution as prior for $\theta​$.  The prior has four parameters $\mu_0, \lambda, \Psi, \nu​$.
 
-The posterior of $\theta$ has close form solution. 
+The posterior of $\theta​$ has close form solution. 
 $$
 \begin{align}
 \mu_n & = \frac{\lambda \mu_0 + n \bar{x}}{\lambda + n} \\
