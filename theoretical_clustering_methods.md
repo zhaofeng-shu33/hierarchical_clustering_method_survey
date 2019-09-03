@@ -31,13 +31,13 @@ Suppose there are $D_1, \dots, D_r$ clusters, each cluster consists of several p
 
 For any two clusters $D_i, D_j$, we can compute the posterior probability to merge them. Let $H^{k}_1$ be the prior probability that $D_i, D_j$
 
-should be merged: $D_k = D_i \cup D_j$. $H_2^{k}$ is the counterpart. Let $\alpha_k = \Pr(H_1^{k})$. Then 
+should be merged: $D_k = D_i \cup D_j$. $H_2^{k}$ is the counterpart. Let $\pi_k = \Pr(H_1^{k})$. Then 
 
 $$
-r_k = \Pr(H_1^k | D_k) = \frac{\alpha_k \Pr(D_k | H_1^k)}{\alpha_k \Pr(D_k | H_1^k) + (1-\alpha_k)\Pr(D_k | H_2^k)}
+r_k = \Pr(H_1^k | D_k) = \frac{\pi_k \Pr(D_k | H_1^k)}{\pi_k \Pr(D_k | H_1^k) + (1-\pi_k)\Pr(D_k | H_2^k)}
 $$
 
-There are three components to compute in this posterior: $\alpha_k, \Pr(D_k | H_1^k)​$ and $\Pr(D_k | H_2^k)​$
+There are three components to compute in this posterior: $\pi_k, \Pr(D_k | H_1^k)​$ and $\Pr(D_k | H_2^k)​$
 
 $\Pr(D_k | H_2^k)$ is easy to be decomposed as $\Pr(D_k | H_2^k)=Pr(D_i | T_i) \Pr(D_j | T_j)$
 
@@ -58,7 +58,7 @@ $$
 $$
 Notice $p​$ is the dimension of $x​$.
 
-For the third quantity $\alpha_k$, its formula comes from Dirichlet process:
+For the third quantity $\pi_k$, its formula comes from Dirichlet process:
 $$
 \begin{align}
 \pi_k & = \frac{\alpha g(n_k)}{ d_k } \\
