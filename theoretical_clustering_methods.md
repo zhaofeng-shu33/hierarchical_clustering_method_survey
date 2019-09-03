@@ -37,7 +37,7 @@ Abbreviated as BHC [ICML 2005].
 
 Use Bayesian posterior probability to determine which two clusters to merge in the framework of agglomerative clustering.
 
-Suppose there are $D_1, \dots, D_r$ clusters, each cluster consists of several points $D_k = \{x_{k_1},\dots x_{k_r}\}$
+Suppose there are $D_1, \dots, D_r$ clusters, each cluster consists of several points $D_k = \{x_{k_1},\dots x_{k_n}\}$
 
 For any two clusters $D_i, D_j$, we can compute the posterior probability to merge them. Let $H^{k}_1$ be the prior probability that $D_i, D_j$
 
