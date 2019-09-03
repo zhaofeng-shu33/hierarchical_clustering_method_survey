@@ -1,3 +1,13 @@
+## Hierarchical Agglomerative Clustering
+
+Abbreviated as HAC. It is a general framework to do hierarchical clustering based on either distance metric or similarity metric. Starting from cluster set $S = \{D_1, \dots, D_k\}$,
+
+It selects two clusters based on $\max_{i,j} \textrm{sim}(D_i, D_j)$ or $\min_{i,j} \textrm{d}(D_i, D_j)$. Since $d(D_i, D_j)\geq 0$ we can let $\textrm{sim}(D_i, D_j) = \frac{1}{d(D_i, D_j)}$ and the optimal solution does not change.
+
+After the choice of $i,j$, we construct $D'_{c} = D_i \cup D_j$ to replace $D_i$ and $D_j​$.
+
+
+
 ## Maximizing the mutual information between samples and cluster labels
 
 Abbreviated as MIC. Do not use KL-divergence because of computational difficulty.

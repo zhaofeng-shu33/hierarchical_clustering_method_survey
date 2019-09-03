@@ -199,12 +199,12 @@ class NormalInverseWishart(CollapsibleDistribution):
     def __init__(self, **prior_hyperparameters):
         self.nu_0 = prior_hyperparameters['nu_0']
         self.mu_0 = prior_hyperparameters['mu_0']
-        self.kappa_0 = prior_hyperparameters['kappa_0']
         self.lambda_0 = prior_hyperparameters['lambda_0']
+        self.psi_0 = prior_hyperparameters['psi_0']
 
         self.d = float(len(self.mu_0))
 
-        self.log_z = self.calc_log_z(self.mu_0, self.lambda_0, self.kappa_0,
+        self.log_z = self.calc_log_z(self.mu_0, self.psi_0, self.lambda_0,
                                      self.nu_0)
 
     @staticmethod
@@ -238,8 +238,8 @@ class NormalInverseWishart(CollapsibleDistribution):
 
     def log_marginal_likelihood(self, X):
         n = X.shape[0]
-        params_n = self.update_parameters(X, self.mu_0, self.lambda_0,
-                                          self.kappa_0, self.nu_0, self.d)
+        params_n = self.update_parameters(X, self.mu_0, self.psi_0,
+                                          self.lambda_0, self.nu_0, self.d)
         log_z_n = self.calc_log_z(*params_n)
 
         return log_z_n - self.log_z - LOG2PI*(n*self.d/2)
@@ -282,8 +282,8 @@ if __name__ == '__main__':
     hypers = {
         'mu_0': np.zeros(2),
         'nu_0': 3.0,
-        'kappa_0': 1.0,
-        'lambda_0': np.eye(2)
+        'lambda_0': 1.0,
+        'psi_0': np.eye(2)
     }
     data_model = NormalInverseWishart(**hypers)
 
