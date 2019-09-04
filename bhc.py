@@ -20,7 +20,7 @@ from math import expm1
 from math import lgamma
 from scipy.cluster.hierarchy import dendrogram
 
-LOG2PI = log(2*pi)
+LOGPI = log(pi)
 LOG2 = log(2)
 
 
@@ -242,7 +242,7 @@ class NormalInverseWishart(CollapsibleDistribution):
                                           self.lambda_0, self.nu_0, self.d)
         log_z_n = self.calc_log_z(*params_n)
 
-        return log_z_n - self.log_z - LOG2PI*(n*self.d/2)
+        return log_z_n - self.log_z - LOGPI*(n*self.d/2)
 
 def makeLinkageMatrix(asgn,lmls):
     N = len(asgn[0])

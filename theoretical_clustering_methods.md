@@ -84,7 +84,7 @@ $$
 $$
 Also, the distribution for data can be obtained. That is
 $$
-\Pr(D_k | H_1^k) = \frac{\Gamma_p(\nu_n/2)}{\Gamma_p(\nu/2)}\frac{|\Psi|^{\nu/2}}{|\Psi_n|^{\nu_n/2}}\left(\frac{\lambda}{\lambda_n}\right)^{\frac{d}{2}}(2\pi)^{-nd/2}
+\Pr(D_k | H_1^k) = \frac{\Gamma_d(\nu_n/2)}{\Gamma_d(\nu/2)}\frac{|\Psi|^{\nu/2}}{|\Psi_n|^{\nu_n/2}}\left(\frac{\lambda}{\lambda_n}\right)^{\frac{d}{2}}\pi^{-nd/2}
 $$
 Notice that $d$ is the dimension of $x$.
 
