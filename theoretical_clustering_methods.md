@@ -4,7 +4,7 @@ Abbreviated as HAC. It is a general framework to do hierarchical clustering base
 
 It selects two clusters based on $\max_{i,j} \textrm{sim}(D_i, D_j)$ or $\min_{i,j} \textrm{d}(D_i, D_j)$. Since $d(D_i, D_j)\geq 0$ we can let $\textrm{sim}(D_i, D_j) = \frac{1}{d(D_i, D_j)}$ and the optimal solution does not change.
 
-After the choice of $i,j​$, we construct $D'_{c} = D_i \cup D_j​$ to replace $D_i​$ and $D_j​$.
+After the choice of $i,j$, we construct $D'_{c} = D_i \cup D_j$ to replace $D_i$ and $D_j$.
 
 ## Maximizing the mutual information between different clusters
 
@@ -30,11 +30,11 @@ The method should fix the number of cluster $C$. First we have a random label as
 
 Abbreviated as MIC. Do not use KL-divergence because of computational difficulty.
 
-Suppose there are $N​$ samples and $n​$ clusters.
+Suppose there are $N$ samples and $n$ clusters.
 $$
 MI(C,x) = \sum_{p=1}^n\sum_{X} (P(C_p,x) - P(C_p)P(x))^2
 $$
-Estimating $P(C_p)​$ from sample distribution directly. 
+Estimating $P(C_p)$ from sample distribution directly. 
 
 Use Mixture Gaussian model to describe $P(x), P(C_p,x)$. 
 $$
@@ -47,7 +47,7 @@ Simplifying $MI(C,x)$ we can find it is irrelevant with variable $x$, it is a fu
 
 Use agglomerative hierarchical clustering to increase $MI(C,x)$ in each step (greedy algorithm). [ICIP 2007]
 
-That is, to compute $\Delta MI(C,x)​$ when two clusters $C_a, C_b​$ are merged to $C_p​$.
+That is, to compute $\Delta MI(C,x)$ when two clusters $C_a, C_b$ are merged to $C_p$.
 
 Ours: Minimizing the multivariate mutual information between different clusters.
 
@@ -67,13 +67,13 @@ $$
 r_k = \Pr(H_1^k | D_k) = \frac{\pi_k \Pr(D_k | H_1^k)}{\pi_k \Pr(D_k | H_1^k) + (1-\pi_k)\Pr(D_k | H_2^k)}
 $$
 
-There are three components to compute in this posterior: $\pi_k, \Pr(D_k | H_1^k)​$ and $\Pr(D_k | H_2^k)​$
+There are three components to compute in this posterior: $\pi_k, \Pr(D_k | H_1^k)$ and $\Pr(D_k | H_2^k)$
 
-$\Pr(D_k | H_2^k)​$ is easy to be decomposed as $\Pr(D_k | H_2^k)=Pr(D_i | T_i) \Pr(D_j | T_j)​$
+$\Pr(D_k | H_2^k)$ is easy to be decomposed as $\Pr(D_k | H_2^k)=Pr(D_i | T_i) \Pr(D_j | T_j)$
 
-Under the hypotheses $H_1^k​$, points $D_k​$ are coming from the same distribution, $p(x|\theta)​$. We choose $\theta = (\mu, \Sigma)​$ where both $\mu​$ and $\Sigma​$ are unknown. Using Bayesian inference, we choose Normal-inverse-Wishart distribution as prior for $\theta​$.  The prior has four parameters $\mu_0, \lambda, \Psi, \nu​$.
+Under the hypotheses $H_1^k$, points $D_k$ are coming from the same distribution, $p(x|\theta)$. We choose $\theta = (\mu, \Sigma)$ where both $\mu$ and $\Sigma$ are unknown. Using Bayesian inference, we choose Normal-inverse-Wishart distribution as prior for $\theta$.  The prior has four parameters $\mu_0, \lambda, \Psi, \nu$.
 
-The posterior of $\theta​$ has close form solution. 
+The posterior of $\theta$ has close form solution. 
 $$
 \begin{align}
 \mu_n & = \frac{\lambda \mu_0 + n \bar{x}}{\lambda + n} \\
@@ -84,9 +84,9 @@ $$
 $$
 Also, the distribution for data can be obtained. That is
 $$
-\Pr(D_k | H_1^k) = \frac{\Gamma_p(\nu_n/2)}{\Gamma_p(\nu/2)}\frac{|\Psi|^{\nu/2}}{|\Psi_n|^{\nu_n/2}}\left(\frac{\lambda}{\lambda_n}\right)^{\frac{p}{2}}(2\pi)^{-n/2}
+\Pr(D_k | H_1^k) = \frac{\Gamma_p(\nu_n/2)}{\Gamma_p(\nu/2)}\frac{|\Psi|^{\nu/2}}{|\Psi_n|^{\nu_n/2}}\left(\frac{\lambda}{\lambda_n}\right)^{\frac{d}{2}}(2\pi)^{-nd/2}
 $$
-Notice $p​$ is the dimension of $x​$.
+Notice that $d$ is the dimension of $x$.
 
 For the third quantity $\pi_k$, its formula comes from Dirichlet process:
 $$
@@ -97,7 +97,13 @@ d_k &= \alpha g(n_k) + d(T_i) d(T_j)
 $$
 Notice that $\alpha$ is the concentration parameter. The larger $\alpha$ is, the larger the prior $\Pr(H_1^k)$ is. $g(n)$ is a function such that a probability that a new point joining an existing cluster is proportional to the number of data points already in that cluster.
 
-Therefore, $g(n) = (n-1)g(n-1) \Rightarrow g(n) = (n-1)!​$.
+Therefore, $g(n) = (n-1)g(n-1) \Rightarrow g(n) = (n-1)!$.
+
+Suppose we get a flat clustering $D_1, \dots, D_r$ from the clustering tree, we can predict the belonging of new observations $x$ using MAP. That is, we compute $p(x| D_i)$ which has close form solution. Under our assumptions, we can deduct that the posterior of data is multivariate t-distribution. 
+$$
+p(x | D) = t_{\nu_n - d + 1}(x | \mu_n, \frac{\lambda_n + 1}{(\nu_n - d + 1)\lambda_n}\Psi_n)
+$$
+
 
 ## Cost function on clustering tree
 
@@ -107,7 +113,13 @@ $$
 $$
 ![](./cost_on_tree.png)
 
-Based on this cost function, the optimal clustering tree is binary. Exactly solving the optimization problem is NP-Hard. We can use an approximation method, which chooses a split $V \to (S, V \backslash S)​$ according to the sparsest cut criterion and recurse on each half. The sparsest cut is
+Figure 2 shows an example to compute the cost given $G$ and $T$, the answer is 24.
+
+![](optimal_tree_is_binary.png)
+
+Based on this cost function, the optimal clustering tree is binary. Exactly solving the optimization problem is NP-Hard. We can use an approximation method, which chooses a split $V \to (S, V \backslash S)$ according to the sparsest cut criterion and recurse on each half. The sparsest cut is
 $$
 \min_{S} \frac{w(S, V\backslash S)}{|S| |V \backslash S|}
 $$
+
+Solving the sparsest cut problem is also NP-hard. 

@@ -29,7 +29,7 @@ To make the notation concise, we use $f(A,B)$ to represent the similarity functi
 
 For example, we let $f(A,B) = \frac{1}{d(A,B)}$ where $d(A,B)=\min_{i\in A, j\in B} \norm{x_i - x_j}_2$. Computing $f(A,B)$ without history information is costive. However, we can store the previous computing results which makes computing $f(A,B)$ is equivalent to look up a table (2d array) in $O(1)$ time. In every iteration of the main loop of Algorithm \ref{alg:bhac}, the loop-up table should be updated partially. That is,  $f(D_t, D_r)$ needs to be updated for $r\neq i,j$ and the time cost is $O(n)$\footnote{computation of $f(D_t, D_r)$ based on $f(D_i, D_r)$ and $f(D_j, D_r)$}, which is no more than finding the maximum value $O(n^2)$. Therefore, the naive implementation of HAC has $O(n^3)$ time complexity. 
 
-Using special data structures can make the time complexity reduce to $O(n^2 \log n)$.
+Using special data structures can we make the time complexity reduce to $O(n^2 \log n)$.
 Only under very special feature function $f(A,B)$ can the time complexity be further reduced.
 
 \end{document}
