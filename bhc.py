@@ -18,7 +18,7 @@ from math import log
 from math import exp
 from math import expm1
 from math import lgamma
-from scipy.cluster.hierarchy import dendrogram
+from scipy.cluster.hierarchy import dendrogram, fcluster
 
 LOGPI = log(pi)
 LOG2 = log(2)
@@ -90,11 +90,13 @@ def bhc(data, data_model, crp_alpha=1.0):
         rks.append(exp(max_rk))
 
         # Merge the highest-scoring pair
+        merged_node.num_children = nodes[merged_left].num_children + nodes[merged_right].num_children
         del nodes[merged_left]
         del nodes[merged_right]
+        
         nodes[merged_node_index] = merged_node
 
-        linkage_matrix.append([merged_left, merged_right, np.fabs(denom), merged_node_index])
+        linkage_matrix.append([merged_left, merged_right, np.fabs(denom), merged_node.num_children])
         merged_node_index += 1
         n_nodes -= 1
     # The denominator of log_rk is at the final merge is an estimate of the
@@ -141,7 +143,7 @@ class Node(object):
         self.nk = data.shape[0]
         self.crp_alpha = crp_alpha
         self.log_pi = log_pi
-
+        self.num_children = 1
         if log_dk is None:
             self.log_dk = log(crp_alpha)
         else:
@@ -292,7 +294,7 @@ if __name__ == '__main__':
     #　print(makeLinkageMatrix(asgn,lmls))
     dn = dendrogram(linkage_matrix)
     plt.show()
-    z = np.array(asgn[-3], dtype=float)
+    z = fcluster(linkage_matrix, 3, 'maxclust')
     plt.figure(tight_layout=True, facecolor='white')
     plt.scatter(data[:, 0], data[:, 1], c=z, cmap='Set1', s=225)
     plt.show()
