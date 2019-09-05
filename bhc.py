@@ -53,11 +53,10 @@ def bhc(data, data_model, crp_alpha=1.0):
     linkage_matrix : The hierarchical clustering encoded as a linkage matrix.
     """
     # initialize the tree
-    nodes = dict((i, Node(np.array([x]), data_model, crp_alpha))
+    nodes = dict((i, Node(np.array([x]), data_model, i, crp_alpha))
                  for i, x in enumerate(data))
     n_nodes = len(nodes)
     linkage_matrix = []
-    rks = [0]
     lmls = []
     merged_node_index = n_nodes
     while n_nodes > 1:
@@ -87,16 +86,15 @@ def bhc(data, data_model, crp_alpha=1.0):
                 merged_right = right_idx
                 merged_left = left_idx
 
-        rks.append(exp(max_rk))
-
         # Merge the highest-scoring pair
         merged_node.num_children = nodes[merged_left].num_children + nodes[merged_right].num_children
-        del nodes[merged_left]
+        merged_node.index = merged_node_index
+        merged_left_index = nodes[merged_left].index
+        merged_right_index = nodes[merged_right].index
         del nodes[merged_right]
+        nodes[merged_left] = merged_node
         
-        nodes[merged_node_index] = merged_node
-
-        linkage_matrix.append([merged_left, merged_right, np.fabs(denom), merged_node.num_children])
+        linkage_matrix.append([merged_left_index, merged_right_index, np.fabs(denom), merged_node.num_children])
         merged_node_index += 1
         n_nodes -= 1
     # The denominator of log_rk is at the final merge is an estimate of the
@@ -122,7 +120,7 @@ class Node(object):
         For to compute merge probability
     """
 
-    def __init__(self, data, data_model, crp_alpha=1.0, log_dk=None,
+    def __init__(self, data, data_model, index, crp_alpha=1.0, log_dk=None,
                  log_pi=0.0):
         """
         Parameters
@@ -144,6 +142,7 @@ class Node(object):
         self.crp_alpha = crp_alpha
         self.log_pi = log_pi
         self.num_children = 1
+        self.index = index
         if log_dk is None:
             self.log_dk = log(crp_alpha)
         else:
@@ -174,7 +173,7 @@ class Node(object):
         if log_pi == 0:
             raise RuntimeError('Precision error')
 
-        return cls(data, data_model, crp_alpha, log_dk, log_pi)
+        return cls(data, data_model, -1, crp_alpha, log_dk, log_pi)
 
 
 class CollapsibleDistribution(object):
