@@ -23,7 +23,10 @@ from scipy.cluster.hierarchy import dendrogram
 LOGPI = log(pi)
 LOG2 = log(2)
 
-
+def bhc_predict(data, data_model):
+    """
+    Compute Posterior p(x|D) distribution 
+    """
 def bhc(data, data_model, crp_alpha=1.0):
     """
     Bayesian hierarchical clustering CRP mixture model.
@@ -47,20 +50,16 @@ def bhc(data, data_model, crp_alpha=1.0):
 
     Returns
     -------
-    assignments : list(list(int))
-        list of assignment vectors. assignments[i] is the assignment of data to
-        i+1 clusters.
-    lml : float
-        log marginal likelihood estimate.
+    linkage_matrix : The hierarchical clustering encoded as a linkage matrix.
     """
     # initialize the tree
     nodes = dict((i, Node(np.array([x]), data_model, crp_alpha))
                  for i, x in enumerate(data))
     n_nodes = len(nodes)
-    assignment = [i for i in range(n_nodes)]
-    assignments = [list(assignment)]
+    linkage_matrix = []
     rks = [0]
     lmls = []
+    merged_node_index = n_nodes
     while n_nodes > 1:
         max_rk = float('-Inf')
         merged_node = None
@@ -91,20 +90,17 @@ def bhc(data, data_model, crp_alpha=1.0):
         rks.append(exp(max_rk))
 
         # Merge the highest-scoring pair
+        del nodes[merged_left]
         del nodes[merged_right]
-        nodes[merged_left] = merged_node
+        nodes[merged_node_index] = merged_node
 
-        for i, k in enumerate(assignment):
-            if k == merged_right:
-                assignment[i] = merged_left
-        assignments.append(list(assignment))
-
+        linkage_matrix.append([merged_left, merged_right, np.fabs(denom), merged_node_index])
+        merged_node_index += 1
         n_nodes -= 1
-        lmls.append(denom)
     # The denominator of log_rk is at the final merge is an estimate of the
     # marginal likelihood of the data under DPMM
-    #lml = denom
-    return assignments, lmls
+    # lml = denom
+    return np.asarray(linkage_matrix)
 
 
 class Node(object):
@@ -290,10 +286,11 @@ if __name__ == '__main__':
     # Sanity check: grab the assignment that has three components and do a
     # visual verification.
     data = gen_data(15)
-    asgn, lmls = bhc(data, data_model)
-    print('len of lml',len(lmls),'len of data',len(asgn[0]))
-    print(makeLinkageMatrix(asgn,lmls))
-    dn = dendrogram(makeLinkageMatrix(asgn,lmls))
+    linkage_matrix = bhc(data, data_model)
+    print(linkage_matrix)
+    # print('len of lml',len(lmls),'len of data',len(asgn[0]))
+    #　print(makeLinkageMatrix(asgn,lmls))
+    dn = dendrogram(linkage_matrix)
     plt.show()
     z = np.array(asgn[-3], dtype=float)
     plt.figure(tight_layout=True, facecolor='white')
