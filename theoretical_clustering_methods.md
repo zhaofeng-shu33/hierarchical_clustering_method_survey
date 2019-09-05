@@ -12,7 +12,7 @@ For two random variables, their similarity is measured by the inner product of t
 $$
 \textrm{CEF}(p,q) = \int p(x) q(x)dx
 $$
-CEF is called the clustering evaluation function, using Parzen Window estimator $P(x) = \frac{1}{N_r} \sum_{i=1}^{N_r} G(x-x_i, \sigma^2)$. The CEF reduces to
+CEF is called the clustering evaluation function, using Parzen's Window estimator $P(x) = \frac{1}{N_r} \sum_{i=1}^{N_r} G(x-x_i, \sigma^2)$. The CEF reduces to
 $$
 \textrm{CEF}(p, q) = \frac{1}{2N_1 N_2} \sum_{i=1}^N\sum_{j=1}^NM(x_i,x_j) G(x_i - x_j, 2\sigma^2)
 $$
@@ -104,6 +104,7 @@ $$
 p(x | D) = t_{\nu_n - d + 1}(x | \mu_n, \frac{\lambda_n + 1}{(\nu_n - d + 1)\lambda_n}\Psi_n)
 $$
 
+Reference: [BayesianGaussian](https://www.cs.ubc.ca/~murphyk/Papers/bayesGauss.pdf)
 
 ## Cost function on clustering tree
 
