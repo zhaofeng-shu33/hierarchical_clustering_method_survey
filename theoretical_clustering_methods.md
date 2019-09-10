@@ -124,3 +124,18 @@ $$
 $$
 
 Solving the sparsest cut problem is also NP-hard. 
+
+## Convex Fusion Penalties
+
+For the data $x_1, \dots, x_n$, convex fusion method packs these data into data matrix $X \in \mathbb{R}^{n \times p}$ 
+
+and solves a family of minimization problems:
+$$
+\begin{align}
+\min_{\alpha \in \mathbb{R}^{n \times p}} & \frac{1}{2} || \alpha - X ||_F^2 \\
+\textrm{subject to } & \Omega_q (\alpha) = \sum_{i < j} w_{ij} || \alpha_i - \alpha_j ||_q \leq t
+\end{align}
+$$
+The parameter $t$ is chosen between $[0, \Omega_q(X)]$ and for different $t$ we can solve a data matrix $\alpha$ ( coordinate of $n$ points) and they form $n$ continuous curve for the parameter $t$. These curves join the same point when $t = 0$ and equals $x_i$ when $t = \Omega_q(X)$. Some curves will join together as $t$ decreases. We call these curves the clusterpath.
+
+![](./clusterpath.png)
