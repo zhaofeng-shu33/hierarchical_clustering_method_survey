@@ -139,3 +139,5 @@ $$
 The parameter $t$ is chosen between $[0, \Omega_q(X)]$ and for different $t$ we can solve a data matrix $\alpha$ ( coordinate of $n$ points) and they form $n$ continuous curve for the parameter $t$. These curves join the same point when $t = 0$ and equals $x_i$ when $t = \Omega_q(X)$. Some curves will join together as $t$ decreases. We call these curves the clusterpath.
 
 ![](./clusterpath.png)
+
+This method is first proposed by Toby Dylan in 2011.

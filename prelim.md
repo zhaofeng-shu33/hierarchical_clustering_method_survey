@@ -9,3 +9,13 @@ $$
 \sigma_n^2 &= \frac{\sigma^2 \sigma_0^2}{n \sigma_0^2 + \sigma^2}
 \end{align}
 $$
+
+## EM GMM
+
+In Expectation Maximization for Gaussian Mixture Model, we further assume there are $n$ hidden random variables $Z_i$. $X_i | Z_i \sim N(\mu_i, \Sigma_i)$ and each $Z_i$ is multinomial distributed  with parameter ($\pi_1, \dots, \pi_K$). for each data point $x_i$, the probability it belongs to $k$ cluster is $P(Z_i = k | X_i = x_i)$ which can be computed by Bayesian posterior law. This is E Step task. For M Step, we should update the old hyper parameter $\theta = \cup_{i=1}^K\{\pi_i, \mu_i, \Sigma_i\}$ by maximization the expectation of log likelihood:
+$$
+\int \log p(x,z | \theta) p(z | x, \theta_{\textrm{old}}) dz
+$$
+This maximization problem has close form solution. Therefore we can update $\theta$ from $\theta_{\textrm{old}}$ and observation $x$. 
+
+## Variational Inference for Dirichlet process mixtures
