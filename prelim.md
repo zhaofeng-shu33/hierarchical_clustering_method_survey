@@ -94,3 +94,9 @@ Finally, the updated formula for $W^{-1}$ is gotten:
 $$
 W^{-1} = W_0^{-1} + \sum_{n=1}^N r_{nk}(x_n - \bar{x})^T\Lambda_k(x_n - \bar{x}) +\frac{\beta_0 (\sum_{n=1}^N r_{nk})(\bar{x}-m_0)^T \Lambda_k (\bar{x} - m_0)}{\beta_0 + \sum_{n=1}^N r_{nk}}
 $$
+
+### Infinite Case
+
+![](./infinite_mixture_dp.png)
+
+The latent variables are $(Z_n, V_k, \eta_k)$.  $V_i | \alpha \sim \textrm{Beta}(1, \alpha)$. 
