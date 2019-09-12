@@ -28,5 +28,40 @@ Like EM GMM, we assume a pre-determined number of cluster $K$.  And we have a bu
 
 Notice that in later update the Dirichlet distribution is not symmetric any more and we use $D(\alpha_1, \dots, \alpha_K)$ to represent the updated parameter. To make notation concise we use $r_{ik} = P(Z_i=k | X_i = x_i)$. The M step parameter update rule is:
 $$
-\alpha_k = \sum_{i=1}^n r_{ik} + \alpha_0
+\begin{align}
+\alpha_k &= \sum_{i=1}^n r_{ik} + \alpha_0 \\
+\beta_k &= \beta_0 + \sum_{i=1}^n r_{ik} \\
+\end{align}
 $$
+This method is first proposed by Hagai [2000]. The theory uses a pre-determined form to approximate $p(Z,\theta | X)$. That is a factorized form $q(Z,\theta | X) = q(Z | X) q(\theta | X)$.  Then to minimize the $\textrm{KL}(q(Z,\theta | X) | p(Z,\theta | X))$ is equivalent to maximize a term called evidence lower bound:
+$$
+F[q] = \int q(Z,\theta | X) \log\frac{p(Z,\theta,X)}{q(Z,\theta | X)}dZd\theta
+$$
+We can show that $F[q] + \textrm{KL}(q(Z,\theta | X) || p(Z,\theta | X)) = \log p(X)$.
+
+In our problem, since the data $X$ is given, we can omit the condition on $X$ without misinterpretation. 
+
+Then we can write
+$$
+F[q]= \int q(Z)q(\theta) \log \frac{p(Z,\theta,X)}{q(Z)q(\theta)}dZd\theta
+$$
+
+
+In E-Step, we compute $q(Z)$ by solving $\frac{\delta F}{\delta q(Z)} = 0$. The result is $q(Z) \propto \exp(\int q(\theta) \log p(Z,\theta, X)d\theta)$.
+
+In M-Step, we compute $q(\theta)$ by solving $\frac{\delta F}{\delta q(\theta)} = 0$. The result is $q(\theta) \propto \exp(\int q(Z) \log p(Z,\theta, X)dZ)$
+
+Reference: [Probabilistic Inference](https://www.doc.ic.ac.uk/~dfg/ProbabilisticInference/IDAPISlides17_18.pdf)
+
+To compute $q(Z_n = k | X_n)$ we have $ p(Z_n = k, X_n | \theta) = \pi_k N(\mu_k, \Sigma_k)$. Then 
+$$
+\log q(Z_n = k | X_n) \propto E_{\pi, \mu, \Lambda}(\frac{1}{2}\log|\Lambda_k|-\frac{1}{2}(x_n - \mu_k)^T \Lambda_k (x_n - \mu_k) + \log \pi_k)
+$$
+$\Lambda_k$ is the precision matrix and we assume $x$ is d dimensional. 
+
+Then we have 
+$$
+q(Z_n = k | X_n ) \propto \tilde{\pi}_k^{1/2} \tilde{\Lambda}_k \exp(-\frac{d}{2\beta_k} - \frac{v}{2}(x_n - m_k)^T W (x_n - m_k))
+$$
+where $\log \tilde{\pi}_k = E[\log \pi_k] = \psi(\alpha_k) - \psi(\sum_{i=1}^K\alpha_i)$ and $\log \tilde{\Lambda}_k = E[\log |\Lambda_k|]$.
+
