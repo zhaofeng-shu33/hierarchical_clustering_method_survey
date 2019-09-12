@@ -53,7 +53,7 @@ In M-Step, we compute $q(\theta)$ by solving $\frac{\delta F}{\delta q(\theta)} 
 
 Reference: [Probabilistic Inference](https://www.doc.ic.ac.uk/~dfg/ProbabilisticInference/IDAPISlides17_18.pdf)
 
-To compute $q(Z_n = k | X_n)$ we have $ p(Z_n = k, X_n | \theta) = \pi_k N(\mu_k, \Sigma_k)$. Then 
+[E-Step deduction]To compute $q(Z_n = k | X_n)$ we have $ p(Z_n = k, X_n | \theta) = \pi_k N(\mu_k, \Sigma_k)$. Then 
 $$
 \log q(Z_n = k | X_n) \propto E_{\pi, \mu, \Lambda}(\frac{1}{2}\log|\Lambda_k|-\frac{1}{2}(x_n - \mu_k)^T \Lambda_k (x_n - \mu_k) + \log \pi_k)
 $$
@@ -63,5 +63,22 @@ Then we have
 $$
 q(Z_n = k | X_n ) \propto \tilde{\pi}_k^{1/2} \tilde{\Lambda}_k \exp(-\frac{d}{2\beta_k} - \frac{v}{2}(x_n - m_k)^T W (x_n - m_k))
 $$
-where $\log \tilde{\pi}_k = E[\log \pi_k] = \psi(\alpha_k) - \psi(\sum_{i=1}^K\alpha_i)$ and $\log \tilde{\Lambda}_k = E[\log |\Lambda_k|]$.
+where $\log \tilde{\pi}_k = E[\log \pi_k] = \psi(\alpha_k) - \psi(\sum_{i=1}^K\alpha_i)$ and $\log \tilde{\Lambda}_k = E[\log |\Lambda_k|]=\phi_d(\frac{v}{2}) + \log|W| + d\log2$.
 
+Where $\psi_d$ is the multivariate digamma function.
+
+[M-Step deduction] $\theta = (\pi, \mu, \Lambda)$. From the graphical model, $q(\theta) = q(\pi) q(\mu, \Lambda)$. For $\log q(\pi) \propto E_{Z}[\log p(Z | \pi) + \log p(\pi | \alpha_0)]$. 
+
+Therefore
+$$
+\begin{align}
+\log q(\pi) &= \sum_{i=1}^n p(Z_i | \pi) + \sum_{j=1}^K (\alpha_0 - 1)\log \pi_j + C\\
+&= \sum_{j=1}^K (\sum_{i=1}^n r_{ij} + \alpha_0 - 1) + C
+\end{align}
+$$
+Therefore, the posterior $\pi$ is also Dirichlet distributed random vector but with updated parameter.
+
+To compute $q(\mu, \Lambda)$, what we need to do is to complete some square terms for $E_{Z_k} [\log p(X | Z_k) ] + \log N(m_0, \beta_0^{-1}\Sigma_k) + \log W(W_0, v_0) $. The complete expansion is as follows:
+$$
+\frac{1}{2}\sum_{i=1}^N r_{nk}(\log | \Lambda_k |  - (x_n - \mu_k)^T \Lambda_k (x_n - \mu_k))+\frac{1}{2}\log |\beta_0 \Lambda_k| -\frac{1}{2}(\mu_k - m_0)^T (\beta_0 \Lambda_k)(\mu_k - m_0)+\frac{v_0 - d -1}{2} \log | \Lambda_k | - \frac{1}{2} \textrm{tr}(W_0^{-1} \Lambda_k)
+$$
