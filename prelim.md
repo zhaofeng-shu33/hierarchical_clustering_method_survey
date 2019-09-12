@@ -82,3 +82,15 @@ To compute $q(\mu, \Lambda)$, what we need to do is to complete some square term
 $$
 \frac{1}{2}\sum_{i=1}^N r_{nk}(\log | \Lambda_k |  - (x_n - \mu_k)^T \Lambda_k (x_n - \mu_k))+\frac{1}{2}\log |\beta_0 \Lambda_k| -\frac{1}{2}(\mu_k - m_0)^T (\beta_0 \Lambda_k)(\mu_k - m_0)+\frac{v_0 - d -1}{2} \log | \Lambda_k | - \frac{1}{2} \textrm{tr}(W_0^{-1} \Lambda_k)
 $$
+We can combine $v_0$ with $\sum_{i=1}^N r_{nk}$ to form updated $v$. $(x_n - \mu_k)$ should be expanded with $(x_n - \bar{x}) - (\mu_k - \bar{x})$ such that the summation over cross term is zero in $\sum_{i=1}^N r_{nk} (x_n -\mu_k)^T \Lambda_k (x_n - \mu_k)$. Therefore, $\bar{x} = \frac{1}{N} \sum_{n=1}^N r_{nk} x_n$. Then we make the square for $\mu_k$ term and get the updated formula for $m$:
+$$
+m = \frac{\beta_0 m_0 + (\sum_{n=1}^N r_{nk})\bar{x}}{\beta_0 + \sum_{n=1}^N r_{nk}}
+$$
+The updated formula for $\beta$ is also easily get:
+$$
+\beta = \beta_0 + \sum_{n=1}^N r_{nk}
+$$
+Finally, the updated formula for $W^{-1}$ is gotten:
+$$
+W^{-1} = W_0^{-1} + \sum_{n=1}^N r_{nk}(x_n - \bar{x})^T\Lambda_k(x_n - \bar{x}) +\frac{\beta_0 (\sum_{n=1}^N r_{nk})(\bar{x}-m_0)^T \Lambda_k (\bar{x} - m_0)}{\beta_0 + \sum_{n=1}^N r_{nk}}
+$$
