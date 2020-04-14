@@ -108,7 +108,7 @@ Reference: [BayesianGaussian](https://www.cs.ubc.ca/~murphyk/Papers/bayesGauss.p
 
 ## Cost function on clustering tree
 
-Given pairwise similarity between data points, we would like to find a clustering tree which minimizes the following cost function [STOC 2016]
+Given pairwise similarity between data points, we would like to find a clustering tree which minimizes the following cost function [STOC 2016]. (we say that $i\vee j$ is the lca of $i$ and $j$)
 $$
 \textrm{cost}_G(T) = \sum_{\{i,j\} \in E} w_{ij} |\textrm{leaves}(T[i\cup j])|
 $$
@@ -141,3 +141,15 @@ The parameter $t$ is chosen between $[0, \Omega_q(X)]$ and for different $t$ we 
 ![](./clusterpath.png)
 
 This method is first proposed by Toby Dylan in 2011.
+
+## Gradient-based hyperbolic hierarchical clustering
+
+This method is proposed by Nicholas Monath in 2019. Given d dimensional data, it used k points in hyperbolic space to describe the inner structure of the clustering tree. Notice that k is fixed in this method,
+
+which is a restriction. The given normalized dataset are treated on the circumference of the Poincare ball.
+
+The coordinates of these k points can be optimized based on a continuous objective
+
+function. The objective function is constructed when 3 points are considered at each time. $w_{ij}$ is used to describe the similarity of two data points. Suppose $w_{ij} > \max\{w_{ik}, w_{jk}\}$, the goal is
+
+to let the lca(least common ancestor) of $i,j$ be different from that of $i,j,k$. 
