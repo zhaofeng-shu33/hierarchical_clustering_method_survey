@@ -161,6 +161,10 @@ $$
 Parent(T_c) = \arg\min_{\substack{T_p \in N\\||z_p||<||z_c||}} d_{cp}(T_c, T_p)
 $$
 
+## Hierarchical DBSCAN
+
+This method is proposed by Campello in 2015. The outlier detection is built-in since this method treats the non-core samples in original DBSCAN as outliers. I suspect HDBSCAN method is very similar with OPTICS method, which relaxes the condition of fixed `epsilon` to allow a range for `epsilon`. Therefore, OPTICS can generate a cluster hierarchy for a given dataset.
+
 ## Reference
 
 1. AGHAGOLZADEH, M., SOLTANIAN-ZADEH, H., ARAABI, B. AND AGHAGOLZADEH, A. 2007. A hierarchical clustering based on mutual information maximization. In 2007 IEEE International Conference on Image Processing IEEE, I-277-I-280.
