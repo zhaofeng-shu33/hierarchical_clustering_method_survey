@@ -6,6 +6,8 @@ It selects two clusters based on $\max_{i,j} \textrm{sim}(D_i, D_j)$ or $\min_{i
 
 After the choice of $i,j$, we construct $D'_{c} = D_i \cup D_j$ to replace $D_i$ and $D_j$.
 
+If $d(D_i, D_j) = \min_{x_i \in D_i, x_j \in D_j} d(x_i, x_j)$, we call the method SLINK (single linkage clustering), which is the oldest hierarchical clustering method available (1973).
+
 ## Maximizing the mutual information between different clusters
 
 For two random variables, their similarity is measured by the inner product of their probability density function as:
@@ -158,3 +160,14 @@ $d_{cp}(T_c, T_p)$ to describe the distance between two points in $Z$, and we ca
 $$
 Parent(T_c) = \arg\min_{\substack{T_p \in N\\||z_p||<||z_c||}} d_{cp}(T_c, T_p)
 $$
+
+## Reference
+
+1. AGHAGOLZADEH, M., SOLTANIAN-ZADEH, H., ARAABI, B. AND AGHAGOLZADEH, A. 2007. A hierarchical clustering based on mutual information maximization. In 2007 IEEE International Conference on Image Processing IEEE, I-277-I-280.
+2. CAMPELLO, R.J., MOULAVI, D., ZIMEK, A. AND SANDER, J. 2015. Hierarchical density estimates for data clustering, visualization, and outlier detection. ACM Transactions on Knowledge Discovery from Data (TKDD) 10, 5.
+3. DASGUPTA, S. 2016. A cost function for similarity-based hierarchical clustering. In Proceedings of the Proceedings of the forty-eighth annual ACM symposium on Theory of Computing, Cambridge, MA, USA2016 ACM, 2897527, 118-127.
+4. GOKCAY, E. AND PRINCIPE, J.C. 2002. Information theoretic clustering. IEEE Transactions on Pattern Analysis and Machine Intelligence 24, 158-171.
+5. HELLER, K.A. AND GHAHRAMANI, Z. 2005. Bayesian hierarchical clustering. In Proceedings of the 22nd international conference on Machine learning, 297-304.
+6. HOCKING, T.D., JOULIN, A., BACH, F. AND VERT, J.-P. 2011. Clusterpath: an algorithm for clustering using convex fusion penalties. In Proceedings of the Proceedings of the 28th International Conference on International Conference on Machine Learning, Bellevue, Washington, USA2011 Omnipress, 3104576, 745-752.
+7. MAXIMILLIAN, N. AND KIELA, D. 2017. Poincare Embeddings for Learning Hierarchical Representations. In Advances in Neural Information Processing Systems 30 Curran Associates, Inc., 6338--6347.
+8. SIBSON, R. 1973. SLINK: An optimally efficient algorithm for the single-link cluster method. The Computer Journal 16, 30-34.
