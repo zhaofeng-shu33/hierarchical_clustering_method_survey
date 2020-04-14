@@ -152,4 +152,9 @@ The coordinates of these k points can be optimized based on a continuous objecti
 
 function. The objective function is constructed when 3 points are considered at each time. $w_{ij}$ is used to describe the similarity of two data points. Suppose $w_{ij} > \max\{w_{ik}, w_{jk}\}$, the goal is
 
-to let the lca(least common ancestor) of $i,j$ be different from that of $i,j,k$. 
+to let the lca(least common ancestor) of $i,j$ be different from that of $i,j,k$. The objective function is denoted as $C_{gHHC}(X, Z)$ where $X$ is the dataset and $Z=\{z_1, \dots, z_k\}$ describes the internal structure of the clustering tree. Generally, the root node in $Z$ is neareast to the origin in the hyperbolic space. We use
+
+$d_{cp}(T_c, T_p)$ to describe the distance between two points in $Z$, and we can get the parent node of $T_c$ by
+$$
+Parent(T_c) = \arg\min_{\substack{T_p \in N\\||z_p||<||z_c||}} d_{cp}(T_c, T_p)
+$$
