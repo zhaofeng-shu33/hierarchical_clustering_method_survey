@@ -165,6 +165,16 @@ $$
 
 This method is proposed by Campello in 2015. The outlier detection is built-in since this method treats the non-core samples in original DBSCAN as outliers. I suspect HDBSCAN method is very similar with OPTICS method, which relaxes the condition of fixed `epsilon` to allow a range for `epsilon`. Therefore, OPTICS can generate a cluster hierarchy for a given dataset.
 
+
+
+## Lossing Data Coding and Compression
+
+This method is proposed by Yi Ma, to deal with mixture Gaussian model. It has advantages over traditional
+
+EM algorithm. For general clustering tasks, the performance is unknown.
+
+
+
 ## Reference
 
 1. AGHAGOLZADEH, M., SOLTANIAN-ZADEH, H., ARAABI, B. AND AGHAGOLZADEH, A. 2007. A hierarchical clustering based on mutual information maximization. In 2007 IEEE International Conference on Image Processing IEEE, I-277-I-280.
@@ -175,3 +185,5 @@ This method is proposed by Campello in 2015. The outlier detection is built-in s
 6. HOCKING, T.D., JOULIN, A., BACH, F. AND VERT, J.-P. 2011. Clusterpath: an algorithm for clustering using convex fusion penalties. In Proceedings of the Proceedings of the 28th International Conference on International Conference on Machine Learning, Bellevue, Washington, USA2011 Omnipress, 3104576, 745-752.
 7. MAXIMILLIAN, N. AND KIELA, D. 2017. Poincare Embeddings for Learning Hierarchical Representations. In Advances in Neural Information Processing Systems 30 Curran Associates, Inc., 6338--6347.
 8. SIBSON, R. 1973. SLINK: An optimally efficient algorithm for the single-link cluster method. The Computer Journal 16, 30-34.
+
+9. Ma, Yi, et al. "Segmentation of multivariate mixed data via lossy data coding and compression." *IEEE transactions on pattern analysis and machine intelligence* 29.9 (2007): 1546-1562.
