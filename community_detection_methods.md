@@ -10,7 +10,25 @@ Maximizing modularity gives a cluster of the graph.
 
 Basic idea is to merge two clusters at each step. For sparse graph, Clauset et. al. [2004] proposes an efficient algorithm to accomplish this merge, which achieves $O(md\log n)$ where $d$ is the depth of the dendrogram. To achieve this time bound, $\Delta Q_{ij}$ is maintained rather than the adjacency matrix. See [fastmodularity](https://www.cs.unm.edu/~aaron/research/fastmodularity.htm) for detail.
 
+## Kernighan-Lin Method (2 community only)
 
+This method is heuristic. It tries to minimize the edge cost between the two communities.
+
+To do so, it first initialize the labels randomly for the graph nodes as $X$. Then it chooses a pair of node $X_a=1, X_b=-1$ such that 
+$$
+T_{alt} - T_{neu} = D_a + D_b - 2 w_{ab}
+$$
+is maximized where $D_a = E_a - I_a$, $E_a$ is the external edge weight sum from node $a$
+
+and $I_a$ is the internal edge weight sum from node $a$ (within the community).
+
+This method actually uses some greedy approach. We have demonstrated
+
+by experiments that this method works quite well for SBM model with 2 communities. Since the optimal
+
+solution of SBM model is also trying to minimize the edge weight sum between the 2 communities.
+
+Reference: https://de.wikipedia.org/wiki/Kernighan-Lin-Algorithmus
 
 ## Divisive approach
 
